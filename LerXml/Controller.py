@@ -55,7 +55,8 @@ class LerXml:
         tree = ElementTree.parse('Arquivo.xml')
         root = tree.getroot()
 
-        dado = request.POST.get('ValorPesquisa')
+        dado = str(request.POST.get('ValorPesquisa'))
+        print(dado)
         for a in root.iter('softwarepatternbag'):
             for b in root.iter('softwarepattern'):
                 for c in root.iter('feature'):
@@ -63,6 +64,7 @@ class LerXml:
                         for e in root.iter('example'):
                             _dados = e.attrib['Examples'].split('|')
                             for f in _dados:
+                                print(f)
                                 if dado == f.strip(' '):
                                     softwarepatternbag ={a.tag: a.attrib['Name']}
                                     softwarepattern = {b.tag: b.attrib['Name']}
@@ -72,10 +74,9 @@ class LerXml:
                                     print(softwarepatternbag)
                                     print(softwarepattern)
                                     print(Examples)
-                                    return JsonResponse(
-                                        {'softwarepatternbag': softwarepatternbag, 'softwarepattern': softwarepattern,
-                                         'feature': feature, 'softwarepatternbags': softwarepatternbags,
-                                         'Examples': Examples})
-                                else:
-                                    return JsonResponse({'softwarepatternbag': 0})
 
+                                    return JsonResponse({'softwarepatternbag': softwarepatternbag, 'softwarepattern': softwarepattern,
+                                                         'feature': feature, 'softwarepatternbags': softwarepatternbags,
+                                                         'Examples': Examples})
+
+        return JsonResponse({'softwarepatternbag': 0})
