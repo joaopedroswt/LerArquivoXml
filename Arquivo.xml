@@ -1,0 +1,466 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sopamm_metamodelv2:Catalogue xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sopamm_metamodelv2="http://www.example.org/sopamm_metamodelv2" Name="Requirement Patterns For Certification Of Electronic Health Record Systems by Brazilian Society of Health Informatics" Date="2019-08-18T00:00:00.000-0300" Version="1.0">
+  <softwarepatternbag Name="SPB_AuthenticationLoginPassword" Problem="Only authenticated users can access the system" Context="Users should be able to perform authentication with login and password on the system" Keywords="authentication; login; password">
+    <softwarepattern xsi:type="sopamm_metamodelv2:FunctionalReqPattern" Name="FRP_AuthenticationLoginPassword" Author="Taciana Novo Kudo" Version="1.0" Goal="User must be identified and authenticated with login and password to access system data or functionality" Source="Brazilian Society of Health Informatics - Certification Manual for Electronic Health Record Systems - Version 4.2">
+      <feature Label="Feature_Authentication through login and password" As="a system user" I_can="authenticate me with login and password" So_that="I get access the system">
+        <scenario Label="Scenario_SuccessfulLogin" Given="I am accessing the login function" When="I type &lt;login> and &lt;password> correct pair" Then="I must be authenticated with the &lt;role> assigned to me AND see the time message of your user's last successful authentication; date and time of unsuccessful authentication attempts after the last successful authentication.">
+          <example Examples="CarlosChegas | 1234abcd | doctor"/>
+          <example Examples="JoseBrasil | 1234abcd | doctor"/>
+          <example Examples="SheilaSherloqui | 1234abcd | doctor"/>
+          <example Examples="Vera Dimin | 1234abcd | system_administrator"/>
+          <example Examples="JoseKiake | 1234abcd | system_administrator"/>
+        </scenario>
+        <scenario Label="Scenario_Login failed - Invalid username" Given="I am accessing the login function" When="I &lt;login&gt; and &lt;password&gt; and the login is invalid" Then="An error message should be displayed">
+          <example Examples="CarlosChas | 1234abcd"/>
+          <example Examples="Jorasil | 1234abcd"/>
+          <example Examples="laSherloqui | 1234abcd"/>
+        </scenario>
+        <scenario Label="Scenario_Login failed - Invalid password" Given="I am accessing the login function" When="I type &lt;login&gt; and &lt;password> and the password is invalid" Then="An error message should be displayed">
+          <example Examples="CarlosChegas | um B C D"/>
+          <example Examples="JoseBrasil | 1d"/>
+          <example Examples="SheilaSherloqui | 13ac"/>
+        </scenario>
+      </feature>
+    </softwarepattern>
+    <softwarepattern xsi:type="sopamm_metamodelv2:AcceptanceTestPattern" Name="ATP_AuthenticationLoginPassword" Author="Taciana Novo Kudo" Version="1.0" Goal="Test login and password authentication function" Source="Brazilian Society of Health Informatics - Certification Manual for Electronic Health Record Systems - Version 4.2">
+      <testcase scenario="//@softwarepatternbag.0/@softwarepattern.0/@feature.0/@scenario.0" Label="TC_SuccessfulLogin ">
+        <steps Steps="TypeLoginPasswordCorrect (String login, password)"/>
+        <uielements Elements="login, password, btnok, role, timeMessage "/>
+      </testcase>
+      <testcase scenario="//@softwarepatternbag.0/@softwarepattern.0/@feature.0/@scenario.1" Label="TC_Login failed - Invalid username">
+        <steps Steps="LoginInvalid (String login, password)"/>
+        <uielements Elements="login, password, btnok, errormessage"/>
+      </testcase>
+      <testcase scenario="//@softwarepatternbag.0/@softwarepattern.0/@feature.0/@scenario.2" Label="TC_Login failed - Invalid password">
+        <steps Steps="PasswordInvalid (String login, password)"/>
+        <uielements Elements="login, password, btnok, errormessage"/>
+      </testcase>
+    </softwarepattern>
+    <softwarepattern xsi:type="sopamm_metamodelv2:NonFunctionalReqPattern" Name="NFRP_RestrictionsOfLoginPasswordAuthentication " Author="Taciana Novo Kudo" Version="1.0" Goal="Set Requirements Restrictions of User Authentication with Login and Password" Source="Brazilian Society of Health Informatics - Certification Manual for Electronic Health Record Systems - Version 4.2">
+      <systemproperty Name="Server-side authentication service" Description="Credentials for authentication to the system must be validated after submission to the server-side system authentication service, preventing validation from happening on the client-side."/>
+      <systemproperty Name="Authentication error message" Description="In case of invalid authentication on attempted access, the error message issued by the system to the user should not state the reason for the error."/>
+      <systemproperty Name="Prevent access by unauthorized persons" Description="Prevent access or viewing of the records by unauthorized persons"/>
+      <systemproperty Name="Access to system data through predefined channels only" Description="Ensure that access to the system data is only possible through predefined interaction channels (eg web, local console, application interface), with mandatory access control mechanisms."/>
+      <systemproperty Name="Store password encoded by hash algorithm" Description="The password must be stored in a database, encoded by a minimum (160-bit) open (public) hash algorithm."/>
+      <systemproperty Name="Access to password encoding" Description="Password encodings are protected against unauthorized access. Only the database user used by the system must access these."/>
+      <systemproperty Name="Password generating" Description="When generating or changing a password that is not set by the user himself, such process should prevent that third parties viewing the password."/>
+      <systemproperty Name="Login and passwrod memorization" Description="The user interface used for entering login and password should prevent the memorization and viewing of previous data."/>
+      <systemproperty Name="Password with character mask" Description="Any direct password entry must be done through a character mask that prevents others from viewing it."/>
+      <systemproperty Name="Using SALT (R)" Description="Implement SALT techniques for password encoding"/>
+    </softwarepattern>
+  </softwarepatternbag>
+  <softwarepatternbag Name="SPB_AuthenticationDigitalCertificate" Problem="Only authenticated users can access the system" Context="Users should be able to perform authentication with digital certificate" Keywords="authentication; digital certificate">
+    <softwarepattern xsi:type="sopamm_metamodelv2:FunctionalReqPattern" Name="FRP_AuthenticationDigitalCertificate" Author="Taciana Novo Kudo" Version="1.0" Goal="User must be identified and authenticated with digital certificate to access system data or functionality" Source="Brazilian Society of Health Informatics - Certification Manual for Electronic Health Record Systems - Version 4.2">
+      <feature Label="Feature_AuthenticationDigitalCertificate" As="a system user" I_can="authenticate me with digital certficate" So_that="I get access the system">
+        <scenario Label="Scenario_AuthenticationDigitalCertificateSuccessfully" Given="I am accessing the login function" When="I use a valid &lt;digital certificate>" Then="I must be authenticated with the &lt;role> assigned to me AND see the time message of your user's last successful authentication; date and time of unsuccessful authentication attempts after the last successful authentication."/>
+        <scenario Label="Scenario_InvalidDigitalCertificate" Given="I am accessing the login function" When="I use an invalid &lt;digital certificate>" Then="An error message should be displayed"/>
+        <scenario Label="Scenario_ExpiredDigitalCertificate" Given="I am accessing the login function" When="I use an expired &lt;digital certificate>" Then="An error message should be displayed"/>
+      </feature>
+    </softwarepattern>
+    <softwarepattern xsi:type="sopamm_metamodelv2:AcceptanceTestPattern" Name="ATP_AuthenticationDigitalCertificate" Author="Taciana Novo Kudo" Version="1.0" Goal="Test authentication with digital certificate" Source="Brazilian Society of Health Informatics - Certification Manual for Electronic Health Record Systems - Version 4.2">
+      <testcase scenario="//@softwarepatternbag.1/@softwarepattern.0/@feature.0/@scenario.2 //@softwarepatternbag.1/@softwarepattern.0/@feature.0/@scenario.1 //@softwarepatternbag.1/@softwarepattern.0/@feature.0/@scenario.0" Label="TC_UserAuthenticationDigitalCertificate"/>
+    </softwarepattern>
+    <softwarepattern xsi:type="sopamm_metamodelv2:NonFunctionalReqPattern" Name="NFRP_RestrictionsOfAuthentication DigitalCertificate" Author="Taciana Novo Kudo" Version="1.0" Goal="Set Requirements Restrictions of User Authentication with Digital Certificate " Source="Brazilian Society of Health Informatics - Certification Manual for Electronic Health Record Systems - Version 4.2">
+      <systemproperty Name="Authentication error message" Description="In case of invalid authentication on attempted access, the error message issued by the system to the user should not state the reason for the error."/>
+      <systemproperty Name="Prevent access by unauthorized persons" Description="Prevent access or viewing of the records by unauthorized persons"/>
+      <systemproperty Name="Access to system data through predefined channels only" Description="Ensure that access to the system data is only possible through predefined interaction channels (eg web, local console, application interface), with mandatory access control mechanisms."/>
+      <systemproperty Name="Prevent unauthorized alteration of the trusted root digital certificate" Description="The S-RES must support security controls that ensure integrity and prevent unauthorized alteration of the trusted root digital certificate relationship."/>
+    </softwarepattern>
+  </softwarepatternbag>
+  <softwarepatternbag Name="SPB_AuthenticationBiometric" Problem="Only authenticated users can access the system" Context="Users should be able to perform biometric authentication" Keywords="authentication; biometric">
+    <softwarepattern xsi:type="sopamm_metamodelv2:FunctionalReqPattern" Name="FRP_AuthenticationBiometric" Author="Taciana Novo Kudo" Version="1.0" Goal="User must be identified and authenticated with biometric functions to access system data or functionality" Source="Brazilian Society of Health Informatics - Certification Manual for Electronic Health Record Systems - Version 4.2">
+      <feature Label="Feature_AuthenticationBiometric" As="a system user" I_can="authenticate me with biometric function" So_that="I get access the system">
+        <scenario Label="Scenario_UserAuthenticationBiometricSuccessfully" Given="I am accessing the login function" When="I use a valid biometrics" Then="I must be authenticated with the &lt;role> assigned to me AND see the time message of your user's last successful authentication; date and time of unsuccessful authentication attempts after the last successful authentication."/>
+        <scenario Label="Scenario_InvalidBiometrics" Given="I am accessing the login function" When="I use an invalid biometrics" Then="An error message should be displayed"/>
+      </feature>
+    </softwarepattern>
+    <softwarepattern xsi:type="sopamm_metamodelv2:AcceptanceTestPattern" Name="ATP_AuthenticationBiometric" Author="Taciana Novo Kudo" Version="1.0" Goal="Test authentication with biometric autenticathion" Source="Brazilian Society of Health Informatics - Certification Manual for Electronic Health Record Systems - Version 4.2">
+      <testcase scenario="//@softwarepatternbag.2/@softwarepattern.0/@feature.0/@scenario.0 //@softwarepatternbag.2/@softwarepattern.0/@feature.0/@scenario.1" Label="TC_UserAuthenticationBiometric"/>
+    </softwarepattern>
+    <softwarepattern xsi:type="sopamm_metamodelv2:NonFunctionalReqPattern" Name="NFRP_RestrictonsOfBiometricsAutenticathion" Author="Taciana Novo Kudo" Version="1.0" Goal="Set Requirements Restrictions of User Authentication with Biometrics" Source="Brazilian Society of Health Informatics - Certification Manual for Electronic Health Record Systems - Version 4.2">
+      <systemproperty Name="Storage location of biometric data " Description="The storage location of biometric data must be protected against unauthorized access. "/>
+    </softwarepattern>
+  </softwarepatternbag>
+  <softwarepatternbag Name="SPB_ControlWrongLogins" Problem="User cannot make invalid authentication attempts more than sometimes allowed" Context="The system must control the amount of invalid login attempts and block the user. The allowed quantity is set." Keywords="wrong; login; block">
+    <softwarepattern xsi:type="sopamm_metamodelv2:FunctionalReqPattern" Name="FRP_ControlWrongLogins" Author="Taciana Novo Kudo" Version="1.0" Goal="Control the amount of invalid login attempts and block the user." Source="Brazilian Society of Health Informatics - Certification Manual for Electronic Health Record Systems - Version 4.2">
+      <feature Label="Feature_ControlWrongLogins" As="a system" I_can="block the user" So_that="control the amount of login attempts">
+        <scenario Label="Scenario_ControlBlockInvalidLogin" Given="I am authenticating in the system" When="I use a &lt;login> invalid " Then="blocks my system &lt;block_login>"/>
+        <scenario Label="Scenario_ControlBlockInvalidPassword" Given="I am authenticating in the system" When="I use a valid &lt;login> AND invalid &lt;password> " Then="blocks my system &lt;block_login>"/>
+        <scenario Label="Scenario_ControlBlockInvalidDigitalCertificate" Given="I am authenticating in the system" When="I use a invalid &lt;digital_certificate>" Then="blocks my system &lt;block_login>"/>
+        <scenario Label="Scenario_ControlBlockInvalidBiometric" Given="I am authenticating in the system" When="I use a invalid &lt;biometric> " Then="blocks my system &lt;block_login>"/>
+      </feature>
+    </softwarepattern>
+    <softwarepattern xsi:type="sopamm_metamodelv2:AcceptanceTestPattern" Name="ATP_ATPControlWrongLogins" Author="Taciana Novo Kudo" Version="1.0" Goal="Test control of how many invalid login and user lockout attempts" Source="Brazilian Society of Health Informatics - Certification Manual for Electronic Health Record Systems - Version 4.2">
+      <testcase scenario="//@softwarepatternbag.3/@softwarepattern.0/@feature.0/@scenario.3 //@softwarepatternbag.3/@softwarepattern.0/@feature.0/@scenario.2 //@softwarepatternbag.3/@softwarepattern.0/@feature.0/@scenario.0 //@softwarepatternbag.3/@softwarepattern.0/@feature.0/@scenario.1" Label="TC_ControlWrongLogins"/>
+    </softwarepattern>
+    <softwarepattern xsi:type="sopamm_metamodelv2:FunctionalReqPattern" Name="SetNumberInvalidAuthentication" Author="Taciana Novo Kudo" Version="1.0" Goal="Set maximum allowed number of invalid authentication attempts before blocking user" Source="Brazilian Society of Health Informatics - Certification Manual for Electronic Health Record Systems - Version 4.2">
+      <feature Label="Feature_SetNumberAuthentication" As="an administrator" I_can="Set allowed number of invalid authentication attempts" So_that="to block user attempting invalid authentication more than allowed number">
+        <scenario Label="Scenario_SetInvalidNumber" Given="I am accessing the system as an administrator" When="I try to change the invalid login attempts parameter to &lt;n>" Then="the system should issue the message &quot;Number of retries must be between 1 and 10&quot;">
+          <example Examples="0"/>
+          <example Examples="11"/>
+        </scenario>
+        <scenario Label="Scenario_SetValidNumber" Given="I am accessing the system as an administrator" When="I try to change the valid login attempts parameter to &lt;n>" Then="the system must save the new parameter and issue the changed message successfully.">
+          <example Examples="1"/>
+          <example Examples="10"/>
+        </scenario>
+      </feature>
+    </softwarepattern>
+    <softwarepattern xsi:type="sopamm_metamodelv2:AcceptanceTestPattern" Name="TestMaximumAllowedNumberAuthentication" Author="Taciana Novo Kudo" Version="1.0" Goal="Test set maximum allowed number of invalid authentication attempts before blocking user" Source="Brazilian Society of Health Informatics - Certification Manual for Electronic Health Record Systems - Version 4.2">
+      <testcase scenario="//@softwarepatternbag.3/@softwarepattern.2/@feature.0/@scenario.0 //@softwarepatternbag.3/@softwarepattern.2/@feature.0/@scenario.1" Label="TC_SetNumberInvalidAuthentication"/>
+    </softwarepattern>
+    <softwarepattern xsi:type="sopamm_metamodelv2:FunctionalReqPattern" Name="FRP_Unlock a user account" Author="Taciana Novo Kudo" Version="1.0" Goal="Unlock a locked user account" Source="Brazilian Society of Health Informatics - Certification Manual for Electronic Health Record Systems - Version 4.2">
+      <feature Label="Feature_UnlockUser" As="an administrator" I_can="Unlock a locked user account on S-RES" So_that="the user can access the system">
+        <scenario Label="Scenario_UnlockUser" Given="I am accessing the system as an administrator" When="I unlock a user " Then="The user can authenticate in the system"/>
+      </feature>
+    </softwarepattern>
+    <softwarepattern xsi:type="sopamm_metamodelv2:AcceptanceTestPattern" Name="ATP_UnlockUserAccount" Author="Taciana Novo Kudo" Version="1.0" Goal="Test unlock a user account" Source="Brazilian Society of Health Informatics - Certification Manual for Electronic Health Record Systems - Version 4.2">
+      <testcase scenario="//@softwarepatternbag.3/@softwarepattern.4/@feature.0/@scenario.0" Label="TC_UnlockUserAccount"/>
+    </softwarepattern>
+  </softwarepatternbag>
+  <softwarepatternbag Name="SPB_PasswordReseting" Problem="Only users with valid passwrod can access the system" Context="User must be able to reset their system access password" Keywords="authentication; recovery; forget ">
+    <softwarepattern xsi:type="sopamm_metamodelv2:FunctionalReqPattern" Name="FRP_PasswordReseting" Author="Taciana Novo Kudo" Version="1.0" Goal="User must be able to change the password to a new valid password and different from the previous one" Source="Brazilian Society of Health Informatics - Certification Manual for Electronic Health Record Systems - Version 4.2">
+      <feature Label="Feature_PasswordReseting" As="a system user" I_can="change my access password" So_that="I get access the system">
+        <scenario Label="PasswordResetingSuccessfull" Given="I am accessing the login change function" When="I enter &lt;login>, &lt;current_password>, &lt;new_password> and &lt;confirm_new_password> equal and containing more than 8 characters, matching at least 1 letter and 1 number" Then="My password is changed">
+          <example Examples="CarlosChegas | 1234abcd | abcd1234 | abcd1234"/>
+          <example Examples="JoseBrasil | 1234abcd | x9y8z7w6 | x9y8z7w6"/>
+          <businessrules Name="UseAlgoritmHash" Description="Modify password must use hash algorithm"/>
+        </scenario>
+        <scenario Label="DontChangePasswordUnder8Characters" Given="I am accessing the login change function" When="I enter &lt;login>, &lt;current_password>, &lt;new_password> AND &lt;confirm_new_password> and new_password contain less than 8 characters" Then="The system should show an error message and it shouldn't be possible to change my password">
+          <example Examples="CarlosChegas | 1234abcd |abc123 |abc123"/>
+          <example Examples="JoseBrasil | 1234abcd | x9y8z7 | x9y8z7"/>
+        </scenario>
+        <scenario Label="DontChangePasswordOnlyWithLetters" Given="I am accessing the login change function" When="I enter &lt;login>, &lt;current_password>, &lt;new_password> AND &lt;confirm_new_password> and new_password contain only letters" Then="The system should show an error message and it shouldn't be possible to change my password">
+          <example Examples="CarlosChegas | 1234abcd |abcdefghij&#xD;&#xA; |abcdefghij"/>
+          <example Examples="JoseBrasil | 1234abcd | tgbnmjuikl | tgbnmjuikl"/>
+        </scenario>
+        <scenario Label="DontChangePasswordOnlyWithNumbers" Given="I am accessing the login change function" When="I enter &lt;login>, &lt;current_password>, &lt;new_password> AND &lt;confirm_new_password> and new_password contain only numbers" Then="The system should show an error message and it shouldn't be possible to change my password">
+          <example Examples="CarlosChegas | 1234abcd | 1234567890 | 1234567890"/>
+          <example Examples="JoseBrasil | 1234abcd | 102938473645 | 102938473645"/>
+          <example Examples="SheilaSherloqui | 1234abcd | 0000000000 | 0000000000"/>
+        </scenario>
+        <scenario Label="DontChangePasswordDifferentConfirmation" Given="I am accessing the login change function" When="I enter &lt;login>, &lt;current_password>, &lt;new_password> AND &lt;confirm_new_password>, but new_password and confirm_new_password  are different from each other" Then="The system should show an error message and it shouldn't be possible to change my password">
+          <example Examples="CarlosChegas | 1234abcd | abcd1234 | abc12345"/>
+          <example Examples="JoseBrasil | 1234abcd | 1a2b3c4d&#xA; | a1b2c3d4"/>
+          <example Examples="SheilaSherloqui | 1234abcd | 1234abcd | 1234a&quot;bc"/>
+        </scenario>
+        <scenario Label="DontChangePasswordToTheSameValue" Given="I am accessing the login change function" When="I enter &lt;login>, &lt;current_password>, &lt;new_password> AND &lt;confirm_new_password>, but new_password has the same value that current_password" Then="The system should show an error message and it shouldn't be possible to change my password">
+          <example Examples="CarlosChegas | 1234abcd | 1234abcd | 1234abcd "/>
+          <example Examples="JoseBrasil | 1234abcd | 1234abcd | 1234abcd "/>
+        </scenario>
+      </feature>
+    </softwarepattern>
+    <softwarepattern xsi:type="sopamm_metamodelv2:AcceptanceTestPattern" Name="ATP_PasswordReseting" Author="Taciana Novo Kudo" Goal="Test password reseting function" Source="Brazilian Society of Health Informatics - Certification Manual for Electronic Health Record Systems - Version 4.2">
+      <testcase scenario="//@softwarepatternbag.4/@softwarepattern.0/@feature.0/@scenario.0" Label="TC_PasswordResetingSuccessfull">
+        <steps Steps="ResetPassword (String login, current_password, new_password, confirm_new_password)"/>
+        <uielements Elements="login, current_password, new_password, confirm_new_password, btnok"/>
+      </testcase>
+      <testcase scenario="//@softwarepatternbag.4/@softwarepattern.0/@feature.0/@scenario.1" Label="TC_DontChangePasswordUnder8Characters">
+        <steps Steps="New_passwordContainLessCharacters (String login, current_password, new_password, confirm_new_password)"/>
+        <uielements Elements="login, current_password, new_password, confirm_new_password, btnok, errorMessage "/>
+      </testcase>
+      <testcase scenario="//@softwarepatternbag.4/@softwarepattern.0/@feature.0/@scenario.2" Label="TC_DontChangePasswordOnlyWithLetters">
+        <steps Steps="New_passwordContainOnlyLetters (String login, current_password, new_password, confirm_new_password)"/>
+        <uielements Elements="login, current_password, new_password, confirm_new_password, btnok, errorMessage "/>
+      </testcase>
+      <testcase scenario="//@softwarepatternbag.4/@softwarepattern.0/@feature.0/@scenario.3" Label="TC_DontChangePasswordOnlyWithNumbers">
+        <steps Steps="New_passwordContainOnlyNumbers (String login, current_password, new_password, confirm_new_password)"/>
+        <uielements Elements="login, current_password, new_password, confirm_new_password, btnok, errorMessage "/>
+      </testcase>
+      <testcase scenario="//@softwarepatternbag.4/@softwarepattern.0/@feature.0/@scenario.4" Label="TC_DontChangePasswordDifferentConfirmation">
+        <steps Steps="New_passwordAndConfirm_new_passwordDifferents (String login, current_password, new_password, confirm_new_password)"/>
+        <uielements Elements="login, current_password, new_password, confirm_new_password, btnok, errorMessage "/>
+      </testcase>
+      <testcase scenario="//@softwarepatternbag.4/@softwarepattern.0/@feature.0/@scenario.5" Label="TC_DontChangePasswordToTheSameValue">
+        <steps Steps="New_passwordHasSameValueCurrent_password (String login, current_password, new_password, confirm_new_password)"/>
+        <uielements Elements="login, current_password, new_password, confirm_new_password, btnok, errorMessage "/>
+      </testcase>
+    </softwarepattern>
+    <softwarepattern xsi:type="sopamm_metamodelv2:FunctionalReqPattern" Name="FRP_PasswordChangePeriodicity" Author="Taciana Novo Kudo" Version="1.0" Goal="Manager / Administrator can set period for change password " Source="Brazilian Society of Health Informatics - Certification Manual for Electronic Health Record Systems - Version 4.2">
+      <feature Label="Feature_PasswordChangePeriodicity" As="a manager / an administrator " I_can="set the password change period" So_that="the system can automatically control the password change time">
+        <scenario Label="Scenario_PeriodSuccessfullChanged" Given="I am accessing the function to set password change frequency" When="I try to change the maximum password change period to &lt;n> months" Then="the system must change the maximum password period">
+          <example Examples="1"/>
+          <example Examples="6"/>
+          <businessrules Name="MaximumChangeTime" Description="The maximum configurable password change time should not exceed 6 months."/>
+        </scenario>
+        <scenario Label="Scenario_PeriodGreaterThan6Months" Given="I am accessing the function to set password change frequency" When="I try to change the maximum password change period to &lt;n> " Then="the system should not change the period and should display an error message &quot;Period greater than 6 months&quot;">
+          <example Examples="7"/>
+          <example Examples="62"/>
+        </scenario>
+        <scenario Label="Scenario_PeriodLessThan1Month" Given="I am accessing the function to set password change frequency" When="I try to change the maximum password change period to &lt;n> " Then="the system should not change the period and should display an error message &quot;Period may not be less than 1 month&quot;">
+          <example Examples="0"/>
+          <example Examples="-1"/>
+        </scenario>
+      </feature>
+    </softwarepattern>
+    <softwarepattern xsi:type="sopamm_metamodelv2:AcceptanceTestPattern" Name="ATP_PasswordChangePeriodicity" Author="Taciana Novo Kudo" Version="1.0" Goal="Test password change periodicity" Source="Brazilian Society of Health Informatics - Certification Manual for Electronic Health Record Systems - Version 4.2">
+      <testcase scenario="//@softwarepatternbag.4/@softwarepattern.2/@feature.0/@scenario.0" Label="TC_PeriodSuccessfullChanged">
+        <steps Steps="I try to change the maximum password change period to &lt;n> months (Integer months)"/>
+        <uielements Elements="months, btnok"/>
+      </testcase>
+      <testcase scenario="//@softwarepatternbag.4/@softwarepattern.2/@feature.0/@scenario.1" Label="TC_PeriodGreaterThan6Months">
+        <steps Steps="I try to change the maximum password change period to &lt;n> (Integer months)"/>
+        <uielements Elements="months, btnok"/>
+      </testcase>
+      <testcase scenario="//@softwarepatternbag.4/@softwarepattern.2/@feature.0/@scenario.2" Label="TC_PeriodLessThan1Month">
+        <steps Steps="I try to change the maximum password change period to &lt;n> (Integer months)"/>
+        <uielements Elements="months, btnok"/>
+      </testcase>
+    </softwarepattern>
+    <softwarepattern xsi:type="sopamm_metamodelv2:FunctionalReqPattern" Name="FRP_ForcedPasswordChange" Author="Taciana Novo Kudo" Version="1.0" Goal="Manager / administrator may request password change" Source="Brazilian Society of Health Informatics - Certification Manual for Electronic Health Record Systems - Version 4.2">
+      <feature Label="Feature_ForcedPasswordChange" As="a manager / an administrator " I_can="set up mandatory password change " So_that="user is forced to change password at next login">
+        <scenario Label="Scenario_ForcePasswordChangeAtNextLogin" Given="I am accessing the function to set force password change at next login" When="I enable the flag for change password &lt;flag> for user &lt;login>" Then="the system must force this user to change the password on next access">
+          <example Examples="1 | CarlosChegas"/>
+          <example Examples="1 | JoseBrasil"/>
+        </scenario>
+      </feature>
+    </softwarepattern>
+    <softwarepattern xsi:type="sopamm_metamodelv2:FunctionalReqPattern" Name="FRP_ServerRequestPasswordChange" Author="Taciana Novo Kudo" Version="1.0" Goal="Server should automatically request password change" Source="Brazilian Society of Health Informatics - Certification Manual for Electronic Health Record Systems - Version 4.2">
+      <feature Label="Feature_ServerRequestPasswordChange" As="a system" I_can="request the password change" So_that="the user has access to the system">
+        <scenario Label="Scenario_ServerRequestPasswordChange" Given="I am trying access the system" When="The system enabled the flag &lt;flag> for change password  for my user &lt;login> AND I enter my &lt;login>" Then="The server requires me to change my password">
+          <example Examples="1 | CarlosChegas | CarlosChegas "/>
+        </scenario>
+      </feature>
+    </softwarepattern>
+    <softwarepattern xsi:type="sopamm_metamodelv2:NonFunctionalReqPattern" Name="Restrictions of change password requirements" Author="Taciana Novo Kudo" Version="1.0" Goal="Set password change requirements restrictions" Source="Brazilian Society of Health Informatics - Certification Manual for Electronic Health Record Systems - Version 4.2">
+      <systemproperty Name="ErrorMessage" Description="In case of invalid password, the error message issued by the system to the user should not state the reason for the error."/>
+    </softwarepattern>
+  </softwarepatternbag>
+  <softwarepatternbag Name="SPB_CRUD_User">
+    <softwarepattern xsi:type="sopamm_metamodelv2:FunctionalReqPattern" Name="FRP_CRUD_User" Author="Taciana Novo Kudo" Version="1.0" Goal="Manager / Administrator can manage (create, retrieve, update, delete) data from a system user" Source="Brazilian Society of Health Informatics - Certification Manual for Electronic Health Record Systems - Version 4.2">
+      <feature Label="Feature_CreateUser" As="a manager / an administrator " I_can="create a new user" So_that="include new user on the  system">
+        <scenario Label="Scenario_CreateUserSuccessfully" Given="I want to create a new user" When="When I enter &lt;name>, &lt;function>, &lt;gender>, &lt;date of birth>, &lt;father's name>, &lt;mother's name> and &lt;role>" Then="The system must create a new user with these data">
+          <example Examples="CPF | name | gender | date of birth | father's name | mother's name | Role"/>
+          <example Examples="735.101.320-92 | Carlos Chegas | Male | 01.01.2000 | Jose Chegas | Carla Chegas | Doctor and system user"/>
+          <example Examples="342.052.020-40 | Josér Mouro Brasil | Male | 01.01.2000 | Jose Brasil | Josefa Brasil | | Ophthalmologist Doctor and system user"/>
+          <example Examples="238.311.950-48 | Sheila Sherloqui | Female | 01.01.2000 | Jose Sherloqui  | Maria Sherloqui | Gastroenterologist Doctor and system user"/>
+          <example Examples="597.835.250-00 | Manoel Abreu | Male | 01.01.2000 | Jose Abreu | Maria Abreu | Radiologist Doctor and system user"/>
+          <example Examples="171.205.000-15 | Ana Meri | female | 01.01.2000 | Jose Meri | Maria Meri | Nurse and system user"/>
+          <example Examples="537.373.770-49 | Ana Tequi | Female | 01.01.2000 | Jose Tequi | Maria Tequi | Nursing technique and sysstem user"/>
+          <example Examples="664.810.070-20 | Erlen Maier | Male | 01.01.2000 | Jose Maier | Maria Maier | Pharmaceutical Biochemical and system user"/>
+          <example Examples="079.001.480-78 | José Silva Filho | male | 10.18.2004 | José Silva | Bianca Silva | Ophthalmology patient in an elective consultation without SRES access"/>
+          <example Examples="642.791.520-71 | José Kiake | Male | 01.01.2000 | Jose Kiake | Luiza Kiake | SRES Systems Security Manager |"/>
+          <example Examples="708.961.430-15 | José Pazter | Male | 01.01.2000 | José Pazter | Erna Pazter | Clinical pathologist Doctor and system user"/>
+          <example Examples="414.702.770-93 | José Audi Torres | Male | 01.01.2000 | Jose Audi | Mama Audi | external auditor"/>
+          <example Examples="407.901.880-07 | Maria Bienvenu | Female | 01.01.2000 | Jose Bienvenu | Maria Bienvenu | Receptionist and system user"/>
+          <example Examples="556.078.430-33 | Mario Perador | Male | 01.01.2000 | Jose Perador  | Maria Perador | System Programmer "/>
+          <example Examples="794.228.140-06 | José Kodaqui | Male | 01.01.2000 | José Kodaqui | Maria Kodaqui | Radiology Technician and system user"/>
+          <example Examples="836.111.680-09 | José Padilha | Male | 01.01.2000 | José Padilha | Maria Padilha | Administration of ambulatory"/>
+          <example Examples="466.963.820-38 | Vera Dimin | Female | 01.01.2000 | Jose Dimin | Maria Dimin | System Administrator"/>
+        </scenario>
+        <scenario Label="Scenario_CreateUserExistingID" Given="I want to create a new user" When="When I enter an existing &lt;CPF> " Then="The system should display an &quot;This user is already registered&quot; message">
+          <example Examples="735.101.320-92"/>
+        </scenario>
+        <scenario Label="Scenario_TryCreateUserInvalidID" Given="I want to create a new user" When="When I enter a invalid &lt;CPF> " Then="The system should display an &quot;This is an invalid ID&quot; message">
+          <example Examples="735.101.320-00"/>
+        </scenario>
+      </feature>
+      <feature Label="Feature_RetrieveUser" As="a manager / an administrator " I_can="search a user" So_that="view user data">
+        <scenario Label="Scenario_RetrieveUserSuccessfullyByName" Given="I am looking for an user" When="search for a user &lt;name> that exist" Then="Show all user data">
+          <example Examples="Carlos Chegas"/>
+        </scenario>
+        <scenario Label="Scenario_RetrieveUserUnsuccessfullByName" Given="I am looking for an user" When="search for a user &lt;name> that does not exist" Then="The system should display an &quot;User not found&quot; message">
+          <example Examples="Carlos Chagas"/>
+        </scenario>
+        <scenario Label="Scenario_RetrieveUserSuccessfullyByCPF" Given="I am looking for an user" When="search for a user &lt;cpf> that exist" Then="Show all user data">
+          <example Examples="735.101.320-92"/>
+        </scenario>
+        <scenario Label="Scenario_RetrieveUserUnsuccessfullByCPF" Given="I am looking for an user" When="search for a user &lt;cpf> that does not exist" Then="The system should display an &quot;User not found&quot; message">
+          <example Examples="735.101.320-00"/>
+        </scenario>
+      </feature>
+      <feature Label="Feature_UpdateUser" As="a manager / an administrator " I_can="update user data" So_that="keep data up to date">
+        <scenario Label="Scenario_UpdateUserSuccessfully" Given="I want update a user data" When="When I enter new &lt;name>, &lt;function>, &lt;gender>, &lt;date of birth>, &lt;father's name>, &lt;mother's name> or &lt;role>" Then="The system must update these user data">
+          <example Examples="735.101.320-92 | Carlos Chegas | Male | 01.01.2000 | Jose Chegas | Carla Chegas | Doctor and system user"/>
+        </scenario>
+        <scenario Label="Scenario_UpdateUserUnsuccessful" Given="I want update a user data" When="When I leave one of the fields unfilled &lt;name>, &lt;function>, &lt;gender>, &lt;date of birth>, &lt;father's name>, &lt;mother's name> or &lt;role> AND " Then="The system should display an &quot;Invalid Data&quot; message">
+          <example Examples="735.101.320-92 | | Male | 01.01.2000 | Jose Chegas | Carla Chegas | Doctor and system user"/>
+          <example Examples="735.101.320-92 | Carlos Chegas |  | 01.01.2000 | Jose Chegas | Carla Chegas | Doctor and system user"/>
+          <example Examples="735.101.320-92 | Carlos Chegas | Male |  | Jose Chegas | Carla Chegas | Doctor and system user"/>
+          <example Examples="735.101.320-92 | Carlos Chegas | Male | 01.01.2000 |  | Carla Chegas | Doctor and system user"/>
+          <example Examples="735.101.320-92 | Carlos Chegas | Male | 01.01.2000 | Jose Chegas |  | Doctor and system user"/>
+          <example Examples="735.101.320-92 | Carlos Chegas | Male | 01.01.2000 | Jose Chegas | Carla Chegas | "/>
+        </scenario>
+      </feature>
+      <feature Label="Feature_DeleteUser" As="a manager / an administrator " I_can="delete an user" So_that="for a user to be deleted from the system">
+        <scenario Label="Scenario_DeleteUserSuccessfully" Given="I am trying to delete a user" When="I inform the user's &lt;CPF> AND this user has not performed any operation on the system" Then="This user must be deleted"/>
+        <scenario Label="Scenario_DeleteUserUnsuccessfull" Given="I am trying to delete a user" When="I inform the user's &lt;CPF> AND this user has performed any operation on the system" Then="The system should display an &quot;It is not possible to delete this user because he has already done system operations&quot; message"/>
+      </feature>
+    </softwarepattern>
+    <softwarepattern xsi:type="sopamm_metamodelv2:AcceptanceTestPattern" Name="ATP_CRUD_User" Author="Taciana Novo Kudo" Source="Brazilian Society of Health Informatics - Certification Manual for Electronic Health Record Systems - Version 4.2">
+      <testcase scenario="//@softwarepatternbag.5/@softwarepattern.0/@feature.0/@scenario.0" Label="TC_CreateUserSuccessfully"/>
+      <testcase scenario="//@softwarepatternbag.5/@softwarepattern.0/@feature.0/@scenario.1" Label="TC_CreateUserUnsuccessfull"/>
+      <testcase scenario="//@softwarepatternbag.5/@softwarepattern.0/@feature.3/@scenario.0" Label="TC_DeleteUserSuccessfully"/>
+      <testcase scenario="//@softwarepatternbag.5/@softwarepattern.0/@feature.3/@scenario.1" Label="TC_DeleteUserUnsuccessfull"/>
+      <testcase scenario="//@softwarepatternbag.5/@softwarepattern.0/@feature.1/@scenario.0" Label="TC_RetrieveUserSuccessfully"/>
+      <testcase scenario="//@softwarepatternbag.5/@softwarepattern.0/@feature.2/@scenario.0" Label="TC_UpdateUserSuccessfully"/>
+      <testcase scenario="//@softwarepatternbag.5/@softwarepattern.0/@feature.1/@scenario.1" Label="TC_RetrieveUserUnsuccessfull"/>
+      <testcase scenario="//@softwarepatternbag.5/@softwarepattern.0/@feature.2/@scenario.1" Label="TC_UpdateUserUnsuccessfull"/>
+    </softwarepattern>
+  </softwarepatternbag>
+  <softwarepatternbag Name="SPB_CRUD_UserRole">
+    <softwarepattern xsi:type="sopamm_metamodelv2:FunctionalReqPattern" Name="FRP_CRUD_UserRole" Author="Taciana Novo Kudo" Source="Brazilian Society of Health Informatics - Certification Manual for Electronic Health Record Systems - Version 4.2">
+      <feature Label="Feature_CreateUserRole">
+        <scenario Label="CreateUserRoleSuccessfully">
+          <example Examples="examples"/>
+        </scenario>
+        <scenario Label="CreateUserRoleUnsuccessfull">
+          <example Examples="examples"/>
+        </scenario>
+      </feature>
+      <feature Label="Feature_RetrieveUserRole">
+        <scenario Label="RetrieveUserRoleSuccessfully">
+          <example Examples="examples"/>
+        </scenario>
+        <scenario Label="RetrieveUserRoleUnsuccessfull">
+          <example Examples="examples"/>
+        </scenario>
+      </feature>
+      <feature Label="Feature_UpdateUserRole">
+        <scenario Label="UpdateUserRoleSuccessfully">
+          <example Examples="examples"/>
+        </scenario>
+        <scenario Label="UpdateUserRoleUnsuccessfull">
+          <example Examples="examples"/>
+        </scenario>
+      </feature>
+      <feature Label="Feature_DeleteUserRole">
+        <scenario Label="DeleteUserRoleSuccessfully">
+          <example Examples="examples"/>
+        </scenario>
+        <scenario Label="DeleteUserRoleUnsuccessfully">
+          <example Examples="examples"/>
+        </scenario>
+      </feature>
+    </softwarepattern>
+    <softwarepattern xsi:type="sopamm_metamodelv2:AcceptanceTestPattern" Name="ATP_CRUD_UserRole" Author="Taciana Novo Kudo" Source="Brazilian Society of Health Informatics - Certification Manual for Electronic Health Record Systems - Version 4.2"/>
+  </softwarepatternbag>
+  <softwarepatternbag Name="SPB_CRUD_UserGroup">
+    <softwarepattern xsi:type="sopamm_metamodelv2:FunctionalReqPattern" Name="FRP_CRUD_UserGroup" Author="Taciana Novo Kudo" Source="Brazilian Society of Health Informatics - Certification Manual for Electronic Health Record Systems - Version 4.2">
+      <feature Label="Feature_CreateUserGroup">
+        <scenario Label="CreateUserGroupSuccessfully">
+          <example Examples="example"/>
+        </scenario>
+        <scenario Label="CreateUserGroupUnsuccessfull">
+          <example Examples="example"/>
+        </scenario>
+      </feature>
+      <feature Label="Feature_RetrieveUserGroup">
+        <scenario Label="RetrieveUserGroupSuccessfully">
+          <example Examples="example"/>
+        </scenario>
+        <scenario Label="RetrieveUserGroupUnsuccessfull">
+          <example Examples="example"/>
+        </scenario>
+      </feature>
+      <feature Label="Feature_UpdateUserGroup">
+        <scenario Label="UpdateUserGroupSuccessfully">
+          <example Examples="example"/>
+        </scenario>
+        <scenario Label="UpdateUserGroupUnsuccessfull">
+          <example Examples="example"/>
+        </scenario>
+      </feature>
+      <feature Label="Feature_DeleteUserGroup">
+        <scenario Label="DeleteUserGroupSuccessfully">
+          <example Examples="example"/>
+        </scenario>
+        <scenario Label="DeleteUserGroupUnsuccessfull">
+          <example Examples="example"/>
+        </scenario>
+      </feature>
+    </softwarepattern>
+    <softwarepattern xsi:type="sopamm_metamodelv2:AcceptanceTestPattern" Name="ATP_CRUD_UserGroup" Author="Taciana Novo Kudo" Source="Brazilian Society of Health Informatics - Certification Manual for Electronic Health Record Systems - Version 4.2">
+      <testcase scenario="//@softwarepatternbag.7/@softwarepattern.0/@feature.0/@scenario.0" Label="TC_CreateUserGroupSuccessfully"/>
+      <testcase scenario="//@softwarepatternbag.7/@softwarepattern.0/@feature.0/@scenario.1" Label="TC_CreateUserGroupUnsuccessfull"/>
+      <testcase scenario="//@softwarepatternbag.7/@softwarepattern.0/@feature.1/@scenario.0" Label="TC_RetrieveUserGroupSuccessfully"/>
+      <testcase scenario="//@softwarepatternbag.7/@softwarepattern.0/@feature.1/@scenario.1" Label="TC_RetrieveUserGroupUnsuccessfull"/>
+      <testcase scenario="//@softwarepatternbag.7/@softwarepattern.0/@feature.2/@scenario.0" Label="TC_UpdateUserGroupSuccessfully"/>
+      <testcase scenario="//@softwarepatternbag.7/@softwarepattern.0/@feature.2/@scenario.1" Label="TC_UpdateUserGroupUnsuccessfull"/>
+      <testcase scenario="//@softwarepatternbag.7/@softwarepattern.0/@feature.3/@scenario.0" Label="TC_DeleteUserGroupSuccessfully"/>
+      <testcase scenario="//@softwarepatternbag.7/@softwarepattern.0/@feature.3/@scenario.1" Label="TC_DeleteUserGroupUnsuccessfull"/>
+    </softwarepattern>
+  </softwarepatternbag>
+  <softwarepatternbag Name="SPB_DelegationOfPower">
+    <softwarepattern xsi:type="sopamm_metamodelv2:FunctionalReqPattern" Name="FRP_DelegationOfPower" Author="Taciana Novo Kudo" Source="Brazilian Society of Health Informatics - Certification Manual for Electronic Health Record Systems - Version 4.2">
+      <feature Label="Feature_DelegationOfPower">
+        <scenario Label="Scenario_DelegationOfPowerSuccessfully">
+          <example Examples="examples"/>
+        </scenario>
+      </feature>
+    </softwarepattern>
+    <softwarepattern xsi:type="sopamm_metamodelv2:AcceptanceTestPattern" Name="ATP_DelegationOfPower" Author="Taciana Novo Kudo" Source="Brazilian Society of Health Informatics - Certification Manual for Electronic Health Record Systems - Version 4.2">
+      <testcase Label="TC_DelegationOfPower">
+        <steps Steps="stesps1"/>
+        <steps Steps="stesp2"/>
+        <uielements Elements="InterfaceElements"/>
+      </testcase>
+    </softwarepattern>
+  </softwarepatternbag>
+  <softwarepatternbag Name="SPB_AcessRESBySubjectOfAttentionOnly">
+    <softwarepattern xsi:type="sopamm_metamodelv2:FunctionalReqPattern" Name="FRP_AcessRESBySubjectOfAttentionOnly" Author="Taciana Novo Kudo" Source="Brazilian Society of Health Informatics - Certification Manual for Electronic Health Record Systems - Version 4.2">
+      <feature Label="Feature_AcessRESBySubjectOfAttentionOnly">
+        <scenario Label="Scenario_AcessRESBySubjectOfAttentionOnlySuccessfully">
+          <example Examples="examples"/>
+        </scenario>
+      </feature>
+    </softwarepattern>
+    <softwarepattern xsi:type="sopamm_metamodelv2:AcceptanceTestPattern" Name="ATP_AcessRESBySubjectOfAttentionOnly" Author="Taciana Novo Kudo" Source="Brazilian Society of Health Informatics - Certification Manual for Electronic Health Record Systems - Version 4.2">
+      <testcase Label="TC_AcessRESBySubjectOfAttentionOnly">
+        <steps Steps="steps1"/>
+        <uielements Elements="InterfaceElements"/>
+      </testcase>
+    </softwarepattern>
+  </softwarepatternbag>
+  <softwarepatternbag Name="SPB_RestrictingAccessToSpecificMedicalRecord">
+    <softwarepattern xsi:type="sopamm_metamodelv2:FunctionalReqPattern" Name="FRP_RestrictingAccessToSpecificMedicalRecord" Author="Taciana Novo Kudo" Source="Brazilian Society of Health Informatics - Certification Manual for Electronic Health Record Systems - Version 4.2">
+      <feature Label="Feature_RestrictingAccessToSpecificMedicalRecord"/>
+    </softwarepattern>
+    <softwarepattern xsi:type="sopamm_metamodelv2:AcceptanceTestPattern" Name="ATP_RestrictingAccessToSpecificMedicalRecord" Author="Taciana Novo Kudo" Source="Brazilian Society of Health Informatics - Certification Manual for Electronic Health Record Systems - Version 4.2"/>
+  </softwarepatternbag>
+  <softwarepatternbag Name="SPB_DataEntryBySubjectOfAttention">
+    <softwarepattern xsi:type="sopamm_metamodelv2:FunctionalReqPattern" Name="FRP_DataEntryBySubjectOfAttention" Author="Taciana Novo Kudo" Source="Brazilian Society of Health Informatics - Certification Manual for Electronic Health Record Systems - Version 4.2">
+      <feature Label="Feature_DataEntryBySubjectOfAttention"/>
+    </softwarepattern>
+    <softwarepattern xsi:type="sopamm_metamodelv2:AcceptanceTestPattern" Name="ATP_DataEntryBySubjectOfAttention" Author="Taciana Novo Kudo" Source="Brazilian Society of Health Informatics - Certification Manual for Electronic Health Record Systems - Version 4.2"/>
+  </softwarepatternbag>
+  <softwarepatternbag Name="SPB_RESAvailability">
+    <softwarepattern xsi:type="sopamm_metamodelv2:FunctionalReqPattern" Name="FRP_RESAvailability" Author="Taciana Novo Kudo" Source="Brazilian Society of Health Informatics - Certification Manual for Electronic Health Record Systems - Version 4.2">
+      <feature Label="Feature_RESAvailability"/>
+    </softwarepattern>
+    <softwarepattern xsi:type="sopamm_metamodelv2:AcceptanceTestPattern" Name="ATP_RESAvailability" Author="Taciana Novo Kudo" Source="Brazilian Society of Health Informatics - Certification Manual for Electronic Health Record Systems - Version 4.2"/>
+  </softwarepatternbag>
+  <softwarepatternbag Name="SPB_DataSecurity">
+    <softwarepattern xsi:type="sopamm_metamodelv2:FunctionalReqPattern" Name="FRP_DataSecurity" Author="Taciana Novo Kudo" Source="Brazilian Society of Health Informatics - Certification Manual for Electronic Health Record Systems - Version 4.2">
+      <feature Label="Feature_DataSecurity"/>
+    </softwarepattern>
+    <softwarepattern xsi:type="sopamm_metamodelv2:AcceptanceTestPattern" Name="ATP_DataSecurity" Author="Taciana Novo Kudo" Source="Brazilian Society of Health Informatics - Certification Manual for Electronic Health Record Systems - Version 4.2"/>
+  </softwarepatternbag>
+  <softwarepatternbag Name="SPB_Documenttion">
+    <softwarepattern xsi:type="sopamm_metamodelv2:FunctionalReqPattern" Name="FRP_Documentation" Author="Taciana Novo Kudo" Source="Brazilian Society of Health Informatics - Certification Manual for Electronic Health Record Systems - Version 4.2">
+      <feature Label="Feature_Documenttion"/>
+    </softwarepattern>
+    <softwarepattern xsi:type="sopamm_metamodelv2:AcceptanceTestPattern" Name="ATP_Documenttion" Author="Taciana Novo Kudo" Source="Brazilian Society of Health Informatics - Certification Manual for Electronic Health Record Systems - Version 4.2"/>
+  </softwarepatternbag>
+  <softwarepatternbag Name="SPB_OccurrenceNotificaion">
+    <softwarepattern xsi:type="sopamm_metamodelv2:FunctionalReqPattern" Name="FRP_OccurrenceNotificaion" Author="Taciana Novo Kudo" Source="Brazilian Society of Health Informatics - Certification Manual for Electronic Health Record Systems - Version 4.2">
+      <feature Label="Feature_OccurrenceNotificaion"/>
+    </softwarepattern>
+    <softwarepattern xsi:type="sopamm_metamodelv2:AcceptanceTestPattern" Name="ATP_OccurrenceNotificaion" Author="Taciana Novo Kudo" Source="Brazilian Society of Health Informatics - Certification Manual for Electronic Health Record Systems - Version 4.2"/>
+  </softwarepatternbag>
+  <softwarepatternbag Name="SPB_Privacy">
+    <softwarepattern xsi:type="sopamm_metamodelv2:FunctionalReqPattern" Name="FRP_Privacy" Author="Taciana Novo Kudo" Source="Brazilian Society of Health Informatics - Certification Manual for Electronic Health Record Systems - Version 4.2">
+      <feature Label="Feature_Privacy"/>
+    </softwarepattern>
+    <softwarepattern xsi:type="sopamm_metamodelv2:AcceptanceTestPattern" Name="ATP_Privacy" Author="Taciana Novo Kudo" Source="Brazilian Society of Health Informatics - Certification Manual for Electronic Health Record Systems - Version 4.2"/>
+  </softwarepatternbag>
+  <softwarepatternbag Name="SPB_DigitalCertificate">
+    <softwarepattern xsi:type="sopamm_metamodelv2:FunctionalReqPattern" Name="FRP_DigitalCertificate" Author="Taciana Novo Kudo" Source="Brazilian Society of Health Informatics - Certification Manual for Electronic Health Record Systems - Version 4.2">
+      <feature Label="Feature_DigitalCertificate"/>
+    </softwarepattern>
+    <softwarepattern xsi:type="sopamm_metamodelv2:AcceptanceTestPattern" Name="ATP_DigitalCertificate" Author="Taciana Novo Kudo" Source="Brazilian Society of Health Informatics - Certification Manual for Electronic Health Record Systems - Version 4.2"/>
+  </softwarepatternbag>
+  <relationshiptypes Name="IsDependent"/>
+  <spbagrelationship Name="CRUDUserDependent" relationshiptypes="//@relationshiptypes.0" softwarepatternbagTO="//@softwarepatternbag.6 //@softwarepatternbag.7 //@softwarepatternbag.8" softwarepatternbagFROM="//@softwarepatternbag.5"/>
+  <spbagrelationship Name="DigitalCertificateDependent" relationshiptypes="//@relationshiptypes.0" softwarepatternbagTO="//@softwarepatternbag.17 //@softwarepatternbag.3" softwarepatternbagFROM="//@softwarepatternbag.1"/>
+  <spbagrelationship Name="AuthenticationLoginPasswordDependent" relationshiptypes="//@relationshiptypes.0" softwarepatternbagTO="//@softwarepatternbag.3 //@softwarepatternbag.4" softwarepatternbagFROM="//@softwarepatternbag.0"/>
+</sopamm_metamodelv2:Catalogue>
