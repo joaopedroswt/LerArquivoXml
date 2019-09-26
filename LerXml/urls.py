@@ -16,10 +16,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from .Controller import *
+from .conexao import *
+from .ControllerSis import *
 
 urlpatterns = [
     # path('admin/', admin.site.urls),
     path('Teste', LerXml.renderiza_tela),
     path('LeArquivoXml', LerXml.ler_arquivo_xml),
     path('BuscaDadosPesquisa', LerXml.pesquisa_pessoas),
+    path('TesteConexao', ControllerSis.controller_sis),
 ]
